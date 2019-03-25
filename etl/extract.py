@@ -6,7 +6,7 @@ from general.base import XlsRange
 
 
 def read_book(filepath):
-    sheetname = 'MASTER'
+    sheetname = 'PLANTILLA'
     wb_generic = xw.Book(filepath)
     work_sheet = wb_generic.sheets[sheetname]
 

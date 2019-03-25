@@ -33,6 +33,11 @@ def get_dayname(idx):
     arr_days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']
     return arr_days[idx]
 
+def get_monthname(idx):
+    new_idx = idx - 1
+    arr_months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
+                  'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+    return arr_months[new_idx]
 
 def get_array_month(year, month):
     week_arr = calendar.monthcalendar(year, month)
@@ -48,6 +53,11 @@ def transform_df(year, month, df_months):
 
     # GET CALENDAR ARRAY OF MONTHS
     arr_months = get_array_month(year, month)
+
+    # SET MONTH NAME AND YEAR NUMBER
+    month_name = get_monthname(month)
+    title_date = '{month} - {year}'.format(month=month_name, year=year)
+    df_months[4][0] = title_date
 
     date = 1
     for xw, week in enumerate(range_months):
