@@ -8,7 +8,7 @@ from general.base import XlsRange
 
 
 def create_new_xlsm(filename):
-    shutil.copy('_BASE.xlsm', filename)
+    shutil.copy('src/_BASE.xlsm', filename)
 
 def generate_schedule_template(filepath, filename, df_months):
     filepath = os.path.join(filepath, filename)
