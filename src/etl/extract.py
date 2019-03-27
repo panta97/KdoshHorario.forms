@@ -1,11 +1,14 @@
+import os
 import xlwings as xw
 import pandas as pd
 import numpy as np
 
-from general.base import XlsRange
+from src.general.base import XlsRange
 
 
-def read_book(filepath):
+def read_book():
+    filepath = os.path.dirname(os.path.realpath(__file__))[:-7] # TODO: HARDCODED
+    filepath = os.path.join(filepath, 'HORARIOS.xlsm')
     sheetname = 'PLANTILLA'
     wb_generic = xw.Book(filepath)
     work_sheet = wb_generic.sheets[sheetname]

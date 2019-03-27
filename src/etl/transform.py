@@ -1,8 +1,5 @@
 import calendar
 
-from general.base import XlsRange
-
-
 def get_days_ranges(start_at_zero=False):
     z = 0 if start_at_zero == False else 1
     arr = []
@@ -13,9 +10,9 @@ def get_days_ranges(start_at_zero=False):
     fcol = 5 - z
     lcol = 8 - z
 
-    for i_y in range(1, 7):
+    for _ in range(1, 7):
         aux_arr = []
-        for i_x in range(1, 8):
+        for _ in range(1, 8):
             new_day_range = [(frow,fcol), (lrow, lcol)]
             aux_arr.append(new_day_range)
             fcol += 5

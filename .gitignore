@@ -128,3 +128,6 @@ dmypy.json
 *.xlsx
 
 .vscode/*
+
+# Custom
+src/venv/*

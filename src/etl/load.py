@@ -4,11 +4,14 @@ import xlwings as xw
 import pandas as pd
 import numpy as np
 
-from general.base import XlsRange
+from src.general.base import XlsRange
 
 
 def create_new_xlsm(filename):
-    shutil.copy('src/_BASE.xlsm', filename)
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    dir_path = dir_path[:-4] # TODO: HARDCODED
+    filepath = os.path.join(dir_path, '_BASE.xlsm')
+    shutil.copy(filepath, filename)
 
 def generate_schedule_template(filepath, filename, df_months):
     filepath = os.path.join(filepath, filename)
