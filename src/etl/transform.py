@@ -1,4 +1,6 @@
 import calendar
+import numpy as np
+from src.service.employees import  get_employees_by_area
 
 def get_days_ranges(start_at_zero=False):
     z = 0 if start_at_zero == False else 1
@@ -7,7 +9,7 @@ def get_days_ranges(start_at_zero=False):
     # RANGE FIRST DAY BOX
     frow = 2 - z
     lrow = 25 - z
-    fcol = 5 - z
+    fcol = 5 - z # STARTS FROM 5 BECAUSE THE FIRST 4 COLUMNS ARE POPULATED FROM EMPLOYEES SERVICE
     lcol = 8 - z
 
     for _ in range(1, 7):
@@ -24,7 +26,6 @@ def get_days_ranges(start_at_zero=False):
         arr.append(aux_arr)
 
     return arr
-
 
 def get_dayname(idx):
     arr_days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']
@@ -43,8 +44,48 @@ def get_array_month(year, month):
         week_arr.append(off_set)
     return week_arr
 
+def add_employees_areas(df, area_id):
+    json_response = get_employees_by_area(area_id)
+    arr_data = []
 
-def transform_df(year, month, df_months):
+    for dict_item in json_response:
+        area_id = dict_item.get('idArea')
+        area_name = dict_item.get('nombreArea')
+        employee_id = dict_item.get('idPersonal')
+        employee_name = dict_item.get('nombrePersonal').split()[0] # GET ONLY THE FIRST NAME
+
+        arr_item = [area_id, employee_id, area_name, employee_name]
+        arr_data.append(arr_item)
+
+    number_employees = len(arr_data)
+    frow = 6 - 1
+    lrow = frow + number_employees
+    off_set = 25 - number_employees #EMPTY ROWS EMPTY EMPLOYEES
+
+    arr_np = np.array(arr_data)
+    arr_np = arr_np.transpose()
+    
+
+    # LOOP THROUGH EVERY ROW IN SHEET
+
+    for _ in range(1, 7):
+        df.iloc[frow:lrow][0] = arr_np[0] # AREA_ID
+        df.iloc[frow:lrow][1] = arr_np[1] # EMPLOYEE_ID
+        df.iloc[frow:lrow][2] = arr_np[2] # AREA_NAME
+        df.iloc[frow:lrow][3] = arr_np[3] # EMPLOYEE_NAME
+
+        frow = frow + number_employees + off_set
+        lrow = frow + number_employees
+
+    return df
+
+
+def fill_area_employees(df, area_id):
+    # SET FIRST FOUR COLUMNS (AREA_ID, EMPLOYEE_ID, AREA_NAME, EMPLOYEE_NAME)
+    df = add_employees_areas(df, area_id)
+    return df
+
+def fill_month_df(year, month, df_months):
     # GET THE RANGE POSITIONS OF ALL DAYS IN EXCEL
     range_months = get_days_ranges(start_at_zero=True)
 
@@ -81,3 +122,8 @@ def transform_df(year, month, df_months):
 
     return df_months
 
+
+def transform_df(year, month, area_id, df):
+    df = fill_month_df(year, month, df)
+    df = fill_area_employees(df, area_id)
+    return df
