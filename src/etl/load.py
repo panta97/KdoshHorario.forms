@@ -26,39 +26,20 @@ def create_missing_sheets(template_filepath, new_filepath, sheetnames):
     template_wb.Close(SaveChanges=False)
     new_wb.Close(SaveChanges=True)
 
-def create_new_xlsm(filename):
+def create_new_xlsm(filename, sheetnames):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     dir_path = dir_path[:-4] # TODO: HARDCODED
     filepath = os.path.join(dir_path, '_BASE.xlsm')
     shutil.copy(filepath, filename)
 
-    sheetnames = ['DAMAS', 'CABALLEROS', 'HOMEKIDS']
     create_missing_sheets(filepath, filename, sheetnames)
 
-def generate_schedule_template(filepath, filename, df):
-    filepath = os.path.join(filepath, filename)
-    create_new_xlsm(filepath)
-
-    app = xw.App(visible=False)
-    wb_generic = app.books.open(filepath)
-    sheetname = 'MASTER'
-    work_sheet = wb_generic.sheets[sheetname]
-    
-    rm = XlsRange(1, 1, 149, 38)
-
-    val_months = df.values
-    work_sheet.range((rm.frow, rm.fcol), (rm.lrow, rm.lcol)).value = val_months
-
-    wb_generic.save()
-    wb_generic.close()
-    app.quit()
-
-def generate_schedule_templates(filepath, filename, dfs, areas):
+def generate_schedule_templates(filepath, filename, dfs, areas, sheetnames):
     # AREA[0] ID
     # AREA[1] NAME
 
     filepath = os.path.join(filepath, filename)
-    create_new_xlsm(filepath) # TODO: SHEETNAMES ARE HARDCODED
+    create_new_xlsm(filepath, sheetnames) # TODO: SHEETNAMES ARE HARDCODED
 
     app = xw.App(visible=False)
     wb_generic = app.books.open(filepath)

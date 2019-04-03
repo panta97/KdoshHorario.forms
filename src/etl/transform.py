@@ -48,6 +48,11 @@ def add_employees_areas(df, area_id):
     json_response = get_employees_by_area(area_id)
     arr_data = []
 
+    # WE RETURN THE DATAFRAME HERE BECAUSE THERE ARE NO EMPLOYEES FOR 
+    # CHOSEN AREA
+    if len(json_response) == 0:
+        return df
+
     for dict_item in json_response:
         area_id = dict_item.get('idArea')
         area_name = dict_item.get('nombreArea')
@@ -124,6 +129,8 @@ def fill_month_df(year, month, df_months):
 
 
 def transform_df(year, month, area_id, df):
-    df = fill_month_df(year, month, df)
-    df = fill_area_employees(df, area_id)
-    return df
+    # COPY BY VALUE
+    w_df = df.copy()
+    w_df = fill_month_df(year, month, w_df)
+    w_df = fill_area_employees(w_df, area_id)
+    return w_df
