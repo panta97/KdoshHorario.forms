@@ -1,8 +1,8 @@
 import requests
-from src.general.constants import LOCAL_BASE_URL
+from src.general.constants import PROD_BASE_URL as base_url
 
 def get_areas_by_sede(sede_id):
-    url = LOCAL_BASE_URL + 'personal/excel/sede'
+    url = base_url + 'personal/excel/sede'
     querystring = {'idSede' : sede_id}
     payload = ''
     headers = {
